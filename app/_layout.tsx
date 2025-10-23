@@ -19,7 +19,7 @@ export default function RootLayout() {
 
   return (
     <Tabs>
-      <SafeAreaView style={styles.screenBG}>
+      <SafeAreaView edges={["top"]} style={styles.screenBG}>
         <TabSlot />
       </SafeAreaView>
       <TabList asChild>
