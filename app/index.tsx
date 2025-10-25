@@ -12,6 +12,7 @@ export default function Home() {
     "Nunito-Bold": require("../assets/fonts/Nunito-Bold.ttf"),
     "Nunito-SemiBold": require("../assets/fonts/Nunito-SemiBold.ttf"),
     "Nunito-Medium": require("../assets/fonts/Nunito-Medium.ttf"),
+    "Nunito-ExtraBold": require("../assets/fonts/Nunito-ExtraBold.ttf"),
   });
 
   useEffect(() => {
