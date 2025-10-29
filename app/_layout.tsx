@@ -24,13 +24,13 @@ export default function RootLayout() {
       </SafeAreaView>
       <TabList asChild>
         <View style={styles.tabBar}>
-          <TabTrigger name="index" href="/">
+          <TabTrigger hitSlop={12} name="index" href="/">
             <HomeTab isFocussed={isActive("/")} />
           </TabTrigger>
-          <TabTrigger name="progress" href="/progress">
+          <TabTrigger hitSlop={12} name="progress" href="/progress">
             <ProgressTab isFocussed={isActive("/progress")} />
           </TabTrigger>
-          <TabTrigger name="profile" href="/profile">
+          <TabTrigger hitSlop={12} name="profile" href="/profile">
             <ProfileTab isFocussed={isActive("/profile")} />
           </TabTrigger>
         </View>

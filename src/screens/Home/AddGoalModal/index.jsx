@@ -5,7 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 
 import styles from "./styles";
 import CustomTextInput from "./CustomTextInput";
-import DropdownInput from "./DropdownInput";
+import DropdownInput from "@/src/components/DropdownInput";
 import { GOAL_DURATION, HABIT_REGULARITY } from "../../../utils/goal";
 import Close from "../../../../assets/icons/Close";
 

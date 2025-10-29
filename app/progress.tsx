@@ -1,13 +1,5 @@
-import { Text, View } from "react-native";
+import ProgressScreen from "../src/screens/Progress";
 
 export default function Progress() {
-  return (
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
-      <Text>Progress</Text>
-    </View>
-  );
+  return <ProgressScreen />;
 }

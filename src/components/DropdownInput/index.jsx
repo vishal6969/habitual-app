@@ -1,23 +1,38 @@
 import React, { useState } from "react";
 
-import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  StatusBar,
+} from "react-native";
 import Tooltip from "react-native-walkthrough-tooltip";
 
-import ChevrownDown from "../../../../assets/icons/ChevronDown";
+import ChevrownDown from "../../../assets/icons/ChevronDown";
+import styles from "./styles";
 
-const DropdownInput = ({ label, options, onSelect }) => {
+const DropdownInput = ({
+  containerStyle,
+  dropdownStyle,
+  dropdownListStyle,
+  label,
+  options = [],
+  onSelect = () => null,
+}) => {
   const [isVisible, setVisible] = useState(false);
   const [selectedItem, setSelected] = useState(options[0]);
 
   const handleSelect = (option) => {
     setSelected(option);
     setVisible(false);
+    onSelect(option);
   };
 
   const renderDropdownContent = () => {
     return (
       <View>
-        {options.map((option, index) => (
+        {options.map((option) => (
           <TouchableOpacity
             onPress={() => handleSelect(option)}
             key={option.id}
@@ -36,22 +51,23 @@ const DropdownInput = ({ label, options, onSelect }) => {
     );
   };
   return (
-    <View style={styles.container}>
-      <Text style={styles.label}>{label}</Text>
+    <View style={[styles.container, containerStyle]}>
+      {label ? <Text style={styles.label}>{label}</Text> : null}
       <Tooltip
         isVisible={isVisible}
         allowChildInteraction={true}
         closeOnBackgroundInteraction={false}
         content={renderDropdownContent()}
-        contentStyle={styles.dropdownListContainer}
+        contentStyle={[styles.dropdownListContainer, dropdownListStyle]}
         backgroundColor="rgba(0, 0, 0, 0)"
         arrowStyle={{ display: "none" }}
         placement="bottom"
         onClose={() => null}
+        topAdjustment={-StatusBar.currentHeight}
       >
         <TouchableOpacity
           onPress={() => setVisible((prev) => !prev)}
-          style={styles.dropdown}
+          style={[styles.dropdown, dropdownStyle]}
         >
           <Text style={styles.dropdownValue}>{selectedItem.label}</Text>
           <ChevrownDown />
@@ -60,54 +76,5 @@ const DropdownInput = ({ label, options, onSelect }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  label: {
-    fontFamily: "Nunito-SemiBold",
-    fontSize: 14,
-  },
-  container: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: 22,
-  },
-  dropdown: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: 182,
-    borderRadius: 4,
-    backgroundColor: "#e7e7e7",
-    paddingVertical: 6,
-    paddingLeft: 12,
-    paddingRight: 6,
-  },
-  dropdownValue: {
-    fontFamily: "Nunito-Bold",
-    fontSize: 14,
-  },
-  dropdownListContainer: {
-    width: 182,
-    height: "auto",
-    paddingVertical: 0,
-    paddingHorizontal: 0,
-    borderWidth: 0.5,
-    borderColor: "rgba(0, 0, 0, 0.2)",
-    left: -14,
-    top: -6,
-  },
-  dropdownListItem: {
-    fontFamily: "Nunito-Bold",
-    color: "rgba(0, 0, 0, 0.5)",
-    fontSize: 14,
-    paddingLeft: 12,
-    paddingVertical: 3,
-  },
-  selectedItem: {
-    backgroundColor: "#e7e7e7",
-    color: "#2f2f2f",
-  },
-});
 
 export default DropdownInput;

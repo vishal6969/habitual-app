@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, ScrollView, Text, View } from "react-native";
 import { Shadow } from "react-native-shadow-2";
 
 import styles from "./styles";
@@ -11,19 +11,19 @@ import CheckBox from "../../../../assets/icons/CheckBox";
 const Habits = () => {
   const renderItem = ({ isComplete }) => {
     return (
-      <View style={[styles.habitItem, !isComplete && styles.altHabitItem]}>
+      <TouchableOpacity
+        style={[styles.habitItem, !isComplete && styles.altHabitItem]}
+      >
         <Text style={[styles.habitTitle, !isComplete && styles.altHabitTitle]}>
           Meditation
         </Text>
         <View style={styles.row}>
-          <TouchableOpacity>
-            {isComplete ? <CompleteTick /> : <CheckBox />}
-          </TouchableOpacity>
+          {isComplete ? <CompleteTick /> : <CheckBox />}
           <TouchableOpacity style={styles.threeDotIcon}>
             <ThreeDotVertical />
           </TouchableOpacity>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -38,10 +38,7 @@ const Habits = () => {
     >
       <View style={styles.container}>
         <Text style={styles.title}>Today's Routine</Text>
-        <ScrollView
-          style={{ flex: 1 }}
-          showsVerticalScrollIndicator={false}
-        >
+        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
           {renderItem({ isComplete: true })}
           {renderItem({ isComplete: true })}
           {renderItem({ isComplete: false })}

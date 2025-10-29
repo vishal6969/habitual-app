@@ -17,8 +17,8 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     borderColor: "#fff",
     position: "absolute",
-    bottom: 16,
-    right: 20,
+    bottom: 32,
+    right: 48,
     elevation: 1,
   },
 });

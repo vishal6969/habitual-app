@@ -1,6 +1,12 @@
 import React, { useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import Svg, { Circle, Defs, LinearGradient, Stop } from "react-native-svg";
+import Svg, {
+  Circle,
+  Defs,
+  LinearGradient,
+  Stop,
+  Path,
+} from "react-native-svg";
 import Animated, {
   useSharedValue,
   useAnimatedProps,
@@ -9,10 +15,17 @@ import Animated, {
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
-const ProgressComponent = ({ size = 118, strokeWidth = 15, progress = 75 }) => {
+const ProgressComponent = ({
+  size = 190,
+  strokeWidth = 24,
+  progress = 75,
+  fontStyle,
+  color1 = "#FFA450",
+  color2 = "#FF5C00",
+  bgCircleColor = "#f0f0f0",
+}) => {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
-
   const animatedProgress = useSharedValue(0);
 
   useEffect(() => {
@@ -31,45 +44,37 @@ const ProgressComponent = ({ size = 118, strokeWidth = 15, progress = 75 }) => {
         <Defs>
           <LinearGradient
             id="grad"
-            x1="0"
-            y1="0"
-            x2="1"
-            y2="1"
+            x1="160.998"
+            y1="36.23"
+            x2="261.128"
+            y2="208.582"
             gradientUnits="userSpaceOnUse"
           >
-            <Stop offset="0" stopColor="#FFA450" />
-            <Stop offset="1" stopColor="#FFC6A6" />
-          </LinearGradient>
-          <LinearGradient
-            id="b"
-            x1={18.995}
-            x2={117.706}
-            y1={58.799}
-            y2={59.294}
-            gradientUnits="userSpaceOnUse"
-          >
-            <Stop stopColor="#fff" />
-            <Stop offset={1} stopColor="#fff" stopOpacity={0.755} />
-            <Stop offset={1} stopColor="#fff" />
+            <Stop stopColor={color1} />
+            <Stop offset="0.604" stopColor={color2} />
           </LinearGradient>
         </Defs>
+
+        {/* Background Circle */}
         <Circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke={bgCircleColor}
+          strokeWidth={strokeWidth}
+          fill="none"
+        />
+
+        {/* Animated Progress Circle */}
+        <AnimatedCircle
+          animatedProps={animatedProps}
           cx={size / 2}
           cy={size / 2}
           r={radius}
           stroke="url(#grad)"
           strokeWidth={strokeWidth}
-          fill="none"
-        />
-        <AnimatedCircle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          stroke="url(#b)"
-          strokeWidth={strokeWidth}
           strokeLinecap="butt"
           strokeDasharray={circumference}
-          animatedProps={animatedProps}
           fill="none"
           rotation="-90"
           originX={size / 2}
@@ -77,7 +82,7 @@ const ProgressComponent = ({ size = 118, strokeWidth = 15, progress = 75 }) => {
         />
       </Svg>
 
-      <Text style={styles.text}>{Math.round(progress)}%</Text>
+      <Text style={[styles.text, fontStyle]}>{Math.round(progress)}%</Text>
     </View>
   );
 };
@@ -90,8 +95,8 @@ const styles = StyleSheet.create({
   text: {
     position: "absolute",
     fontFamily: "Nunito-Bold",
-    fontSize: 21,
-    color: "#fff",
+    fontSize: 28,
+    color: "#FF5C00",
   },
 });
 
