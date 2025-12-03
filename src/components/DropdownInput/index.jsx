@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Text,
-  StyleSheet,
   View,
   TouchableOpacity,
   StatusBar,
@@ -17,11 +16,20 @@ const DropdownInput = ({
   dropdownStyle,
   dropdownListStyle,
   label,
+  topAdjustment,
+  initialSelect,
   options = [],
   onSelect = () => null,
 }) => {
   const [isVisible, setVisible] = useState(false);
   const [selectedItem, setSelected] = useState(options[0]);
+  
+  useEffect(() => {
+    if (initialSelect) {
+      setSelected(initialSelect);
+    }
+  }, [initialSelect])
+  
 
   const handleSelect = (option) => {
     setSelected(option);
@@ -63,7 +71,7 @@ const DropdownInput = ({
         arrowStyle={{ display: "none" }}
         placement="bottom"
         onClose={() => null}
-        topAdjustment={-StatusBar.currentHeight}
+        topAdjustment={topAdjustment ? -StatusBar.currentHeight : 0}
       >
         <TouchableOpacity
           onPress={() => setVisible((prev) => !prev)}

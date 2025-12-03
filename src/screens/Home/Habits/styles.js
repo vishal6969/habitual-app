@@ -57,6 +57,33 @@ const styles = StyleSheet.create({
   threeDotIcon: {
     marginLeft: 8,
   },
+  tooltip: {
+    height: "auto",
+    width: "auto",
+    paddingLeft: 8,
+    paddingRight: 8,
+    paddingTop: 4,
+    paddingBottom: 4,
+    backgroundColor: "#fff",
+    borderWidth: 0.5,
+    borderColor: "rgba(0, 0, 0, 0.2)",
+    borderRadius: 4,
+  },
+  edit: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  delete: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 4,
+  },
+  deleteTxt: {
+    fontFamily: "Nunito-SemiBold",
+    fontSize: 14,
+    color: "#838383",
+    marginLeft: 8,
+  },
 });
 
 export default styles;

@@ -20,6 +20,7 @@ const Progress = () => {
           dropdownStyle={styles.filterInput}
           containerStyle={styles.filterContainer}
           options={PROGRESS_PERIOD}
+          topAdjustment={true}
         />
       </View>
       <View style={styles.content}>

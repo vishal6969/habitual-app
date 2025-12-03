@@ -23,13 +23,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
+  actionBtnContainer: {
+    marginTop: 56,
+  },
   actionBtn: {
     flexDirection: "row",
     justifyContent: "center",
     width: "100%",
     paddingVertical: 12,
     borderRadius: 4,
-    marginTop: 56,
   },
   actionBtnTxt: {
     fontFamily: "Nunito-ExtraBold",
