@@ -18,19 +18,57 @@ import CheckBox from "../../../../assets/icons/CheckBox";
 import { useHabits } from "@/src/stores/habits";
 import Delete from "../../../../assets/icons/Delete";
 import Edit from "../../../../assets/icons/Edit";
+import { showConfirm } from "@/src/components/Confirm";
+import { useGoals } from "@/src/stores/goals";
 
 const Habits = ({ handleGoalEdit }) => {
-  const { habits, toggleComplete } = useHabits();
+  const {
+    habits,
+    toggleComplete,
+    deleteHabit,
+    toggleInstance: toggleHabitInstance,
+  } = useHabits();
+  const { deleteGoal } = useGoals();
   const [habitActionId, setHabitActionId] = useState();
 
   const handleItemPress = useCallback((habitId) => {
     toggleComplete(habitId);
+    toggleHabitInstance(habitId);
   }, []);
 
-  const handleEditPress = (item) => {
+  const handleEditPress = useCallback((item) => {
     handleGoalEdit(item);
     setHabitActionId(null);
-  };
+  }, []);
+
+  const handleDeleteGoal = useCallback(
+    ({ habitId, goalId }) => {
+      deleteHabit(habitId);
+      deleteGoal(goalId);
+    },
+    [deleteGoal, deleteHabit]
+  );
+
+  const handleDeletePress = useCallback(
+    (item) => {
+      const confirmationModalOptions = {
+        title: "Remove Habit Goal ?",
+        subtitle:
+          "This will permanently delete your habit goal and its progress",
+        confirmText: "Remove",
+        cancelText: "Cancel",
+        destructive: true,
+      };
+
+      showConfirm(confirmationModalOptions).then((isConfirm) => {
+        if (isConfirm) {
+          handleDeleteGoal({ habitId: item.id, goalId: item.goalId });
+        }
+      });
+      setHabitActionId(null);
+    },
+    [handleDeleteGoal, showConfirm]
+  );
 
   const renderTooltip = (item) => {
     return (
@@ -42,7 +80,10 @@ const Habits = ({ handleGoalEdit }) => {
           <Edit size={14} />
           <Text style={styles.deleteTxt}>Edit</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.delete}>
+        <TouchableOpacity
+          style={styles.delete}
+          onPress={() => handleDeletePress(item)}
+        >
           <Delete size={14} />
           <Text style={styles.deleteTxt}>Delete</Text>
         </TouchableOpacity>
