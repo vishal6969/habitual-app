@@ -61,4 +61,55 @@ const styles = StyleSheet.create({
   },
 });
 
+export const goalsListStyle = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: 22,
+  },
+  goalItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#fbfbfb",
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 16,
+  },
+  goalDetails: {
+    marginLeft: 16,
+  },
+  goalName: {
+    fontFamily: "Nunito-Bold",
+    fontSize: 16,
+    color: "#2f2f2f",
+  },
+  goalTarget: {
+    fontFamily: "Nunito-Medium",
+    fontSize: 14,
+    color: "#2f2f2f",
+    marginTop: 8,
+  },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  goalStatusPill: {
+    backgroundColor: "#d7ffe7",
+    borderRadius: 32,
+    paddingHorizontal: 10,
+    paddingVertical: 2,
+  },
+  altGoalStatusPill: {
+    backgroundColor: "transparent",
+  },
+  goalStatusTxt: {
+    fontFamily: "Nunito-Medium",
+    fontSize: 14,
+    color: "#37c871",
+  },
+  altGoalStatusTxt: {
+    color: "#959595",
+  },
+});
+
 export default styles;

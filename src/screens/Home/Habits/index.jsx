@@ -20,6 +20,7 @@ import Delete from "../../../../assets/icons/Delete";
 import Edit from "../../../../assets/icons/Edit";
 import { showConfirm } from "@/src/components/Confirm";
 import { useGoals } from "@/src/stores/goals";
+import NoHabitState from "./NoHabitsState";
 
 const Habits = ({ handleGoalEdit }) => {
   const {
@@ -125,6 +126,10 @@ const Habits = ({ handleGoalEdit }) => {
       </TouchableOpacity>
     );
   };
+
+  if (!habits.length) {
+    return <NoHabitState />;
+  }
 
   return (
     <Shadow

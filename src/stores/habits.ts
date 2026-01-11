@@ -1,12 +1,20 @@
 import * as SecureStore from "expo-secure-store";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import { format } from "date-fns";
+
+type HabitInstance = {
+  id: number;
+  date: string; // "yyyy-MM-dd"
+  completed: boolean;
+};
 
 interface Habit {
   id: number;
   goalId: number;
   name: string;
-  completed: boolean;
+  completed?: boolean;
+  instances: HabitInstance[];
 }
 
 type HabitsState = {
@@ -15,6 +23,8 @@ type HabitsState = {
   editHabit: (id: number, patch: Partial<Omit<Habit, "id">>) => Habit | null;
   deleteHabit: (id: number) => boolean;
   toggleComplete: (id: number) => Habit | null;
+  addInstance: (habitId: number) => Habit | null;
+  toggleInstance: (habitId: number) => HabitInstance | null;
 };
 
 const secureStorage = {
@@ -66,6 +76,39 @@ export const useHabits = create<HabitsState>()(
         newHabits[idx] = updated;
         set({ habits: newHabits });
         return updated;
+      },
+      addInstance: (habitId: number) => {
+        const dateKey = format(new Date(), "yyyy-MM-dd");
+        const habits = get().habits.slice();
+        const idx = habits.findIndex((h) => h.id === habitId);
+
+        if (idx === -1) return null;
+
+        const instances = habits[idx].instances || [];
+        instances.push({ id: Date.now(), date: dateKey, completed: false });
+
+        habits[idx] = { ...habits[idx], instances };
+        set({ habits });
+
+        return habits[idx];
+      },
+      toggleInstance: (habitId: number) => {
+        const dateKey = format(new Date(), "yyyy-MM-dd");
+        const habits = get().habits.slice();
+        const idx = habits.findIndex((h) => h.id === habitId);
+
+        if (idx === -1) return null;
+
+        const instances = (habits[idx].instances || []).slice();
+        const iIdx = instances.findIndex((i) => i.date === dateKey);
+
+        if (iIdx === -1) return null;
+
+        instances[iIdx].completed = !instances[iIdx].completed;
+        habits[idx] = { ...habits[idx], instances };
+        set({ habits });
+
+        return instances[iIdx];
       },
     }),
     {

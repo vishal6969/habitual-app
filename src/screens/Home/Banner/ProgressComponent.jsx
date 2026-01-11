@@ -16,7 +16,9 @@ const ProgressComponent = ({ size = 118, strokeWidth = 15, progress = 75 }) => {
   const animatedProgress = useSharedValue(0);
 
   useEffect(() => {
-    animatedProgress.value = withTiming(progress, { duration: 1500 });
+    animatedProgress.value = withTiming(isNaN(progress) ? 0 : progress, {
+      duration: 1500,
+    });
   }, [progress]);
 
   const animatedProps = useAnimatedProps(() => {
@@ -77,7 +79,9 @@ const ProgressComponent = ({ size = 118, strokeWidth = 15, progress = 75 }) => {
         />
       </Svg>
 
-      <Text style={styles.text}>{Math.round(progress)}%</Text>
+      <Text style={styles.text}>
+        {isNaN(progress) ? 0 : Math.round(progress)}%
+      </Text>
     </View>
   );
 };

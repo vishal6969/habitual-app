@@ -11,7 +11,12 @@ export const PROGRESS_PERIOD = [
   },
   {
     id: 3,
-    label: "All Time",
-    value: Number.MAX_VALUE,
+    label: "Last 6 Months",
+    value: 180,
+  },
+  {
+    id: 4,
+    label: "Last year",
+    value: 365,
   },
 ];

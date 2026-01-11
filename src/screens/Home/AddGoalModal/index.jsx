@@ -19,7 +19,7 @@ const AddGoalModal = ({ isVisible = true, onClose }) => {
   const [goalPeriod, setGoalPeriod] = useState();
   const [habitType, setHabitType] = useState();
   const { addGoal, editGoal } = useGoals();
-  const { addHabit, editHabit } = useHabits();
+  const { addHabit, editHabit, addInstance: addHabitInstance } = useHabits();
 
   useEffect(() => {
     if (goalEditData && isVisible) {
@@ -76,15 +76,25 @@ const AddGoalModal = ({ isVisible = true, onClose }) => {
       });
     } else {
       const goal = addGoal(newGoalData);
-      addHabit({
+      const habit = addHabit({
         name: goal.habitName,
         goalId: goal.id,
       });
+      addHabitInstance(habit.id);
     }
 
     onClose();
     resetFormData();
-  }, [habitName, goalName, goalPeriod, habitType, goalEditData, addGoal]);
+  }, [
+    habitName,
+    goalName,
+    goalPeriod,
+    habitType,
+    goalEditData,
+    addGoal,
+    addHabit,
+    addHabitInstance,
+  ]);
 
   return (
     <Modal

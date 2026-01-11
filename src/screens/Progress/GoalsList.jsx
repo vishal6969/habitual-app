@@ -1,16 +1,18 @@
 import React from "react";
 
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, Text, View } from "react-native";
 
 import ProgressComponent from "./ProgressComponent";
+import { goalsListStyle } from "./styles";
 
-const GoalsList = () => {
+const GoalsList = ({ goals }) => {
   const renderItem = ({ item }) => {
-    let isAchieved = item % 2 == 0;
+    const { percentage, totalDays, completedDays } = item;
+    const isAchieved = totalDays === completedDays;
 
     return (
-      <View style={styles.goalItem} key={item}>
-        <View style={styles.row}>
+      <View style={goalsListStyle.goalItem} key={item}>
+        <View style={goalsListStyle.row}>
           <ProgressComponent
             size={49}
             strokeWidth={3}
@@ -22,22 +24,25 @@ const GoalsList = () => {
               fontFamily: "Nunito-Bold",
             }}
             bgCircleColor="#dbdbdb"
+            progress={percentage}
           />
-          <View style={styles.goalDetails}>
-            <Text style={styles.goalName}>Journaling everyday</Text>
-            <Text style={styles.goalTarget}>7 from 7 days target</Text>
+          <View style={goalsListStyle.goalDetails}>
+            <Text style={goalsListStyle.goalName}>{item.name}</Text>
+            <Text
+              style={goalsListStyle.goalTarget}
+            >{`${completedDays} from ${totalDays} days target`}</Text>
           </View>
         </View>
         <View
           style={[
-            styles.goalStatusPill,
-            !isAchieved && styles.altGoalStatusPill,
+            goalsListStyle.goalStatusPill,
+            !isAchieved && goalsListStyle.altGoalStatusPill,
           ]}
         >
           <Text
             style={[
-              styles.goalStatusTxt,
-              !isAchieved && styles.altGoalStatusTxt,
+              goalsListStyle.goalStatusTxt,
+              !isAchieved && goalsListStyle.altGoalStatusTxt,
             ]}
           >
             {isAchieved ? "Achieved" : "Unachieved"}
@@ -46,65 +51,15 @@ const GoalsList = () => {
       </View>
     );
   };
+
   return (
     <FlatList
       showsVerticalScrollIndicator={false}
-      style={styles.container}
-      data={[1, 2, 3, 4, 5, 6, 7, 8]}
+      style={goalsListStyle.container}
+      data={goals}
       renderItem={renderItem}
     />
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: 22,
-  },
-  goalItem: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#fbfbfb",
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 16,
-  },
-  goalDetails: {
-    marginLeft: 16,
-  },
-  goalName: {
-    fontFamily: "Nunito-Bold",
-    fontSize: 16,
-    color: "#2f2f2f",
-  },
-  goalTarget: {
-    fontFamily: "Nunito-Medium",
-    fontSize: 14,
-    color: "#2f2f2f",
-    marginTop: 8,
-  },
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  goalStatusPill: {
-    backgroundColor: "#d7ffe7",
-    borderRadius: 32,
-    paddingHorizontal: 10,
-    paddingVertical: 2,
-  },
-  altGoalStatusPill: {
-    backgroundColor: "none",
-  },
-  goalStatusTxt: {
-    fontFamily: "Nunito-Medium",
-    fontSize: 14,
-    color: "#37c871",
-  },
-  altGoalStatusTxt: {
-    color: "#959595",
-  },
-});
 
 export default GoalsList;
