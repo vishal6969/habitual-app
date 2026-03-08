@@ -1,26 +1,24 @@
 import React, { useCallback, useState } from "react";
 
 import {
-  TouchableOpacity,
-  Text,
-  View,
   FlatList,
-  StatusBar,
   Pressable,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { Shadow } from "react-native-shadow-2";
 import Tooltip from "react-native-walkthrough-tooltip";
 
-import styles from "./styles";
-import CompleteTick from "../../../../assets/icons/CompleteTick";
-import ThreeDotVertical from "../../../../assets/icons/ThreeDotVertical";
-import CheckBox from "../../../../assets/icons/CheckBox";
-import { useHabits } from "@/src/stores/habits";
-import Delete from "../../../../assets/icons/Delete";
-import Edit from "../../../../assets/icons/Edit";
 import { showConfirm } from "@/src/components/Confirm";
 import { useGoals } from "@/src/stores/goals";
+import { useHabits } from "@/src/stores/habits";
+import CheckBox from "../../../../assets/icons/CheckBox";
+import CompleteTick from "../../../../assets/icons/CompleteTick";
+import Delete from "../../../../assets/icons/Delete";
+import Edit from "../../../../assets/icons/Edit";
+import ThreeDotVertical from "../../../../assets/icons/ThreeDotVertical";
 import NoHabitState from "./NoHabitsState";
+import styles from "./styles";
 
 const Habits = ({ handleGoalEdit }) => {
   const {
@@ -47,7 +45,7 @@ const Habits = ({ handleGoalEdit }) => {
       deleteHabit(habitId);
       deleteGoal(goalId);
     },
-    [deleteGoal, deleteHabit]
+    [deleteGoal, deleteHabit],
   );
 
   const handleDeletePress = useCallback(
@@ -68,7 +66,7 @@ const Habits = ({ handleGoalEdit }) => {
       });
       setHabitActionId(null);
     },
-    [handleDeleteGoal, showConfirm]
+    [handleDeleteGoal, showConfirm],
   );
 
   const renderTooltip = (item) => {
@@ -113,7 +111,6 @@ const Habits = ({ handleGoalEdit }) => {
             parentWrapperStyle={styles.threeDotIcon}
             isVisible={habitActionId === item.id}
             placement="bottom"
-            topAdjustment={-StatusBar.currentHeight}
             backgroundColor="rgba(0, 0, 0, 0)"
             arrowStyle={{ display: "none" }}
             onClose={() => setHabitActionId(null)}
@@ -127,28 +124,21 @@ const Habits = ({ handleGoalEdit }) => {
     );
   };
 
-  if (!habits.length) {
+  const filteredHabits = (habits || []).filter((h) => h.active);
+
+  if (!filteredHabits.length) {
     return <NoHabitState />;
   }
 
   return (
-    <Shadow
-      containerStyle={styles.shadowContainer}
-      style={styles.shadow}
-      distance={6}
-      sides={{ top: true, bottom: true, start: true, end: true }}
-      startColor="rgba(0, 0, 0, 0.02)"
-      endColor="#fcfcff"
-    >
-      <View style={styles.container}>
-        <Text style={styles.title}>Today's Routine</Text>
-        <FlatList
-          data={habits}
-          renderItem={renderItem}
-          showsVerticalScrollIndicator={false}
-        />
-      </View>
-    </Shadow>
+    <View style={styles.container}>
+      <Text style={styles.title}>Today's Routine</Text>
+      <FlatList
+        data={filteredHabits}
+        renderItem={renderItem}
+        showsVerticalScrollIndicator={false}
+      />
+    </View>
   );
 };
 

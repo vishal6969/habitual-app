@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Modal, Text, TouchableOpacity, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -16,8 +16,8 @@ const AddGoalModal = ({ isVisible = true, onClose }) => {
   const { goalEditData } = useGlobal();
   const [habitName, setHabitName] = useState();
   const [goalName, setGoalName] = useState();
-  const [goalPeriod, setGoalPeriod] = useState();
-  const [habitType, setHabitType] = useState();
+  const [goalPeriod, setGoalPeriod] = useState(GOAL_DURATION[0]);
+  const [habitType, setHabitType] = useState(HABIT_REGULARITY[0]);
   const { addGoal, editGoal } = useGoals();
   const { addHabit, editHabit, addInstance: addHabitInstance } = useHabits();
 
@@ -96,6 +96,11 @@ const AddGoalModal = ({ isVisible = true, onClose }) => {
     addHabitInstance,
   ]);
 
+  const isFormValid = useMemo(
+    () => habitName && goalName,
+    [goalName, habitName],
+  );
+
   return (
     <Modal
       animationType="fade"
@@ -136,8 +141,12 @@ const AddGoalModal = ({ isVisible = true, onClose }) => {
           initialSelect={habitType}
         />
         <TouchableOpacity
-          style={styles.actionBtnContainer}
+          style={[
+            styles.actionBtnContainer,
+            !isFormValid && styles.disabledActiveBtnContainer,
+          ]}
           onPress={handleSubmit}
+          disabled={!isFormValid}
         >
           <LinearGradient
             colors={["#ffa450", "#ff5c00"]}

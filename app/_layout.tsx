@@ -1,15 +1,21 @@
 import { usePathname } from "expo-router";
 import { TabList, Tabs, TabSlot, TabTrigger } from "expo-router/ui";
-import { StyleSheet, View } from "react-native";
+import { useEffect } from "react";
+import { StatusBar, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import HomeTab from "../assets/icons/HomeTab";
 import ProfileTab from "../assets/icons/ProfileTab";
 import ProgressTab from "../assets/icons/ProgressTab";
+import { registerHabitSync } from "../src/background/habitSync";
 import ConfirmProvider from "../src/components/Confirm";
 
 export default function RootLayout() {
   const pathname = usePathname();
+
+  useEffect(() => {
+    registerHabitSync();
+  }, []);
 
   const isActive = (route: string) => {
     if (!pathname) return false;
@@ -22,6 +28,7 @@ export default function RootLayout() {
     <ConfirmProvider>
       <Tabs>
         <SafeAreaView edges={["top"]} style={styles.screenBG}>
+          <StatusBar barStyle={"dark-content"} />
           <TabSlot />
         </SafeAreaView>
         <TabList asChild>
@@ -31,9 +38,6 @@ export default function RootLayout() {
             </TabTrigger>
             <TabTrigger hitSlop={12} name="progress" href="/progress">
               <ProgressTab isFocussed={isActive("/progress")} />
-            </TabTrigger>
-            <TabTrigger hitSlop={12} name="profile" href="/profile">
-              <ProfileTab isFocussed={isActive("/profile")} />
             </TabTrigger>
           </View>
         </TabList>
@@ -49,8 +53,8 @@ const styles = StyleSheet.create({
   },
   tabBar: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: 55,
+    justifyContent: "space-evenly",
     paddingVertical: 21,
+    backgroundColor: "#fcfcff",
   },
 });

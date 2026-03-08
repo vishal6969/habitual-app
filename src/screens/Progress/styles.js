@@ -29,11 +29,12 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    marginTop: 32,
-    backgroundColor: "#fff",
-    borderRadius: 12,
-    paddingHorizontal: 20,
     paddingTop: 48,
+  },
+  noGoalStateContainer: {
+    justifyContent: "center",
+    paddingTop: 0,
+    paddingBottom: "20%",
   },
   row1: {
     flexDirection: "row",
@@ -64,21 +65,24 @@ const styles = StyleSheet.create({
 export const goalsListStyle = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 22,
+    marginTop: 32,
   },
   goalItem: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#fbfbfb",
+    borderWidth: 2,
+    borderColor: "#f7f7f7",
     borderRadius: 8,
     padding: 12,
     marginBottom: 16,
   },
   goalDetails: {
+    flex: 1,
     marginLeft: 16,
   },
   goalName: {
+    flex: 1,
     fontFamily: "Nunito-Bold",
     fontSize: 16,
     color: "#2f2f2f",
@@ -92,23 +96,6 @@ export const goalsListStyle = StyleSheet.create({
   row: {
     flexDirection: "row",
     alignItems: "center",
-  },
-  goalStatusPill: {
-    backgroundColor: "#d7ffe7",
-    borderRadius: 32,
-    paddingHorizontal: 10,
-    paddingVertical: 2,
-  },
-  altGoalStatusPill: {
-    backgroundColor: "transparent",
-  },
-  goalStatusTxt: {
-    fontFamily: "Nunito-Medium",
-    fontSize: 14,
-    color: "#37c871",
-  },
-  altGoalStatusTxt: {
-    color: "#959595",
   },
 });
 

@@ -10,6 +10,7 @@ import Plus from "../../../assets/icons/Plus";
 import AddGoalModal from "./AddGoalModal";
 import { useGoals } from "@/src/stores/goals";
 import { useGlobal } from "@/src/stores/global";
+import useNotifications from "../../hooks/useNotifications";
 
 const Home = () => {
   const date = new Date();
@@ -19,6 +20,7 @@ const Home = () => {
   const [goalModalVisible, setGoalModalVisible] = useState(false);
   const { getGoalById } = useGoals();
   const { setGoalEditData } = useGlobal();
+  useNotifications();
 
   const handleGoalEdit = (item) => {
     setGoalEditData({ habitId: item.id, ...getGoalById(item.goalId), lichie:true });

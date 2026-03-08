@@ -8,21 +8,25 @@ import { useHabits } from "@/src/stores/habits";
 
 const Banner = () => {
   const { habits } = useHabits();
+  const filteredHabits = useMemo(
+    () => habits.filter((habit) => habit.active),
+    [habits]
+  );
 
   const completedHabitsCount = useMemo(() => {
     let count = 0;
 
-    habits.forEach((habit) => {
+    filteredHabits.forEach((habit) => {
       if (habit.completed) {
         count++;
       }
     });
     return count;
-  }, [habits]);
+  }, [filteredHabits]);
 
   const progressPercentage = useMemo(
-    () => (completedHabitsCount / habits.length) * 100,
-    [completedHabitsCount, habits]
+    () => (completedHabitsCount / filteredHabits.length) * 100,
+    [completedHabitsCount, filteredHabits]
   );
 
   return (
@@ -34,7 +38,7 @@ const Banner = () => {
       <View>
         <Text style={styles.infoTxt1}>
           {completedHabitsCount > 0
-            ? `${completedHabitsCount} of ${habits.length} habits`
+            ? `${completedHabitsCount} of ${filteredHabits.length} habits`
             : "No Habits"}
         </Text>
         <Text style={styles.infoTxt2}>completed today!</Text>

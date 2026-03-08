@@ -33,21 +33,6 @@ const GoalsList = ({ goals }) => {
             >{`${completedDays} from ${totalDays} days target`}</Text>
           </View>
         </View>
-        <View
-          style={[
-            goalsListStyle.goalStatusPill,
-            !isAchieved && goalsListStyle.altGoalStatusPill,
-          ]}
-        >
-          <Text
-            style={[
-              goalsListStyle.goalStatusTxt,
-              !isAchieved && goalsListStyle.altGoalStatusTxt,
-            ]}
-          >
-            {isAchieved ? "Achieved" : "Unachieved"}
-          </Text>
-        </View>
       </View>
     );
   };

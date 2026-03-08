@@ -2,9 +2,9 @@ import { StyleSheet, Text, View } from "react-native";
 
 import Notepad from "../../../../assets/icons/Notepad";
 
-const NoHabitsState = () => {
+const NoHabitsState = ({containerStyle}) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       <Notepad height={230} />
       <Text style={styles.title}>Get Started !!</Text>
       <Text style={styles.description}>

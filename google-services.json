@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "362811816948",
+    "project_id": "habitual-5ab11",
+    "storage_bucket": "habitual-5ab11.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:362811816948:android:3f4b0e34c4371d1ef617a1",
+        "android_client_info": {
+          "package_name": "com.habitual.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlX7Zd2S04192_-YavW-xOOnZrgwwzrPA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

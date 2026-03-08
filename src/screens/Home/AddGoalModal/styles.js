@@ -26,6 +26,9 @@ const styles = StyleSheet.create({
   actionBtnContainer: {
     marginTop: 56,
   },
+  disabledActiveBtnContainer: {
+    opacity: 0.5,
+  },
   actionBtn: {
     flexDirection: "row",
     justifyContent: "center",

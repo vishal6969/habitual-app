@@ -3,23 +3,11 @@ import { Dimensions, StyleSheet } from "react-native";
 const ScreenWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
-  shadowContainer: {
-    flex: 1,
-    width: ScreenWidth - 32,
-    marginHorizontal: 16,
-    marginVertical: 22,
-  },
-  shadow: {
-    flex: 1,
-    width: "100%",
-    borderRadius: 12,
-  },
   container: {
     flex: 1,
     width: "100%",
-    backgroundColor: "#fff",
-    paddingHorizontal: 14,
-    paddingVertical: 22,
+    paddingHorizontal: 16,
+    paddingVertical: 32,
     borderRadius: 12,
   },
   title: {
@@ -40,7 +28,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#edfff4",
   },
   altHabitItem: {
-    backgroundColor: "#fbfbfb",
+    backgroundColor: "#f7f7f7",
   },
   habitTitle: {
     fontFamily: "Nunito-SemiBold",

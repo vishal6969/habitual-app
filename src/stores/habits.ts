@@ -1,7 +1,7 @@
+import { format } from "date-fns";
 import * as SecureStore from "expo-secure-store";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { format } from "date-fns";
 
 type HabitInstance = {
   id: number;
@@ -14,6 +14,7 @@ interface Habit {
   goalId: number;
   name: string;
   completed?: boolean;
+  active?: boolean;
   instances: HabitInstance[];
 }
 
@@ -46,7 +47,7 @@ export const useHabits = create<HabitsState>()(
       habits: [],
       addHabit: (habit) => {
         const id = Date.now();
-        const newHabit: Habit = { ...habit, id };
+        const newHabit: Habit = { ...habit, id, active: true };
         set((state) => ({ habits: [...state.habits, newHabit] }));
         return newHabit;
       },
