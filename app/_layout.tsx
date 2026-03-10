@@ -5,12 +5,32 @@ import { StatusBar, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import HomeTab from "../assets/icons/HomeTab";
-import ProfileTab from "../assets/icons/ProfileTab";
 import ProgressTab from "../assets/icons/ProgressTab";
 import { registerHabitSync } from "../src/background/habitSync";
 import ConfirmProvider from "../src/components/Confirm";
+import * as Sentry from '@sentry/react-native';
 
-export default function RootLayout() {
+Sentry.init({
+  dsn: 'https://26a0334fd02495bfa7ed2993892b515b@o4511021762150400.ingest.de.sentry.io/4511021762609232',
+
+  // Adds more context data to events (IP address, cookies, user, etc.)
+  // For more information, visit: https://docs.sentry.io/platforms/react-native/data-management/data-collected/
+  sendDefaultPii: true,
+
+  // Enable Logs
+  enableLogs: true,
+
+  // Configure Session Replay
+  replaysSessionSampleRate: 0.1,
+  replaysOnErrorSampleRate: 1,
+  integrations: [Sentry.mobileReplayIntegration()],
+  enabled: !__DEV__,
+
+  // uncomment the line below to enable Spotlight (https://spotlightjs.com)
+  // spotlight: __DEV__,
+});
+
+export default Sentry.wrap(function RootLayout() {
   const pathname = usePathname();
 
   useEffect(() => {
@@ -44,7 +64,7 @@ export default function RootLayout() {
       </Tabs>
     </ConfirmProvider>
   );
-}
+});
 
 const styles = StyleSheet.create({
   screenBG: {
