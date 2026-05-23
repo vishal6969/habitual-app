@@ -1,12 +1,9 @@
 import { useGoals } from "@/src/stores/goals";
 import { useHabits } from "@/src/stores/habits";
+import * as Sentry from "@sentry/react-native";
 import { differenceInCalendarDays, format, parseISO } from "date-fns";
-import * as BackgroundFetch from "expo-background-fetch";
-import * as TaskManager from "expo-task-manager";
 
-const TASK_NAME = "HABIT_SYNC_TASK";
-
-async function performSync(): Promise<BackgroundFetch.BackgroundFetchResult> {
+async function performSync(): Promise<boolean> {
   try {
     const goals = useGoals.getState().goals || [];
     const habitsStore = useHabits.getState();
@@ -16,23 +13,19 @@ async function performSync(): Promise<BackgroundFetch.BackgroundFetchResult> {
     let madeChanges = false;
 
     for (const goal of goals) {
-      // parse start date (support multiple formats)
       let start = new Date(goal.startDate);
       if (isNaN(start.getTime())) {
-        // try ISO parse
         try {
           start = parseISO(goal.startDate as string);
         } catch (e) {
-          continue; // cannot parse start date
+          continue;
         }
       }
 
       const daysPassed = differenceInCalendarDays(new Date(), start);
       const periodDays = (goal.period && (goal.period as any).value) || 0;
 
-      // check if goal is active today
       if (daysPassed >= 0 && daysPassed < periodDays) {
-        // ensure habit exists for this goal
         let habit = habits.find((h) => h.goalId === goal.id);
         if (!habit) {
           habit = habitsStore.addHabit({
@@ -43,60 +36,41 @@ async function performSync(): Promise<BackgroundFetch.BackgroundFetchResult> {
           madeChanges = true;
         }
 
-        // ensure today's instance exists
-        const hasToday = (habit.instances || []).some(
-          (i) => i.date === todayKey,
-        );
-        if (!hasToday) {
-          habitsStore.addInstance(habit.id);
-          madeChanges = true;
-        }
-      } else if (daysPassed >= periodDays) {
-        // goal has completed — mark its habit as inactive so it won't be shown on home screen
-        // we keep the habit and its instances for progress/history
-        const habit = habits.find((h) => h.goalId === goal.id);
-        if (habit) {
-          // use editHabit to set active = false
-          if (typeof habitsStore.editHabit === "function") {
-            habitsStore.editHabit(habit.id, { active: false });
+        const freq = Math.max(1, Math.floor(Number((goal as any)?.habitType?.value) || 1));
+        const isScheduledToday = daysPassed % freq === 0;
+
+        if (isScheduledToday) {
+          const hasToday = (habit.instances || []).some((i) => i.date === todayKey);
+          if (!hasToday) {
+            habitsStore.addInstance(habit.id);
+            habitsStore.toggleComplete(habit.id, false);
             madeChanges = true;
           }
         }
       }
     }
 
-    return madeChanges
-      ? BackgroundFetch.BackgroundFetchResult.NewData
-      : BackgroundFetch.BackgroundFetchResult.NoData;
+    return madeChanges;
   } catch (err) {
     console.error("habitSync error", err);
-    return BackgroundFetch.BackgroundFetchResult.Failed;
+    Sentry.logger.error("habitSync error", { err, failed: true });
+    return false;
   }
 }
 
-TaskManager.defineTask(TASK_NAME, async () => {
-  const result = await performSync();
-  return result;
-});
+let _isSyncRunning = false;
+let _lastSyncAt = 0;
 
-export async function registerHabitSync() {
-  try {
-    const isRegistered = await TaskManager.isTaskRegisteredAsync(TASK_NAME);
-    if (!isRegistered) {
-      // minimumInterval in seconds. On many platforms this is a suggestion.
-      await BackgroundFetch.registerTaskAsync(TASK_NAME, {
-        minimumInterval: 24 * 60 * 60, // 24 hours
-        stopOnTerminate: false,
-        startOnBoot: true,
-      });
-      console.log("Habit sync task registered");
-    }
-  } catch (err) {
-    console.error("Failed to register habit sync task", err);
-  }
-}
-
-// helper to run sync immediately (useful for testing from UI)
 export async function runHabitSyncNow() {
-  return performSync();
+  const now = Date.now();
+  if (now - _lastSyncAt < 5000 || _isSyncRunning) return false;
+
+  _isSyncRunning = true;
+  try {
+    const res = await performSync();
+    _lastSyncAt = Date.now();
+    return res;
+  } finally {
+    _isSyncRunning = false;
+  }
 }

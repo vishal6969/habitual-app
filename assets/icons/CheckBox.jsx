@@ -1,7 +1,7 @@
 import * as React from "react";
 import Svg, { Path } from "react-native-svg";
 
-const CheckBox = ({ height = 32, width = 33 }) => (
+const CheckBox = ({ height = 30, width = 33 }) => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
     width={width}
@@ -10,7 +10,7 @@ const CheckBox = ({ height = 32, width = 33 }) => (
     viewBox="0 0 33 32"
   >
     <Path
-      stroke="#2F2F2F"
+      stroke="#37C871"
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth={2}

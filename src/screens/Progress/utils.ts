@@ -1,24 +1,22 @@
-import { subDays, format } from "date-fns";
+import { useGoals } from "@/src/stores/goals";
 import { useHabits } from "@/src/stores/habits";
 
+export function calcGoalProgress(goalId: number) {
+  const habit = useHabits.getState().habits?.find((h) => h.goalId === goalId);
+  const goal = useGoals.getState().goals?.find((g) => g.id === goalId);
 
-export function calcGoalProgressLastNDays(goalId: number, days: number) {
-  const habit = useHabits.getState().habits?.find(h => h.goalId === goalId);
+  if (!goal) return { percentage: 0, completed: 0, total: 0 };
 
-  const fromDate = format(subDays(new Date(), days - 1), "yyyy-MM-dd");
-  const toDate = format(new Date(), "yyyy-MM-dd");
+  const freq = Math.max(1, goal.habitType?.value ?? 1);
+  const periodDays = goal.period?.value ?? 0;
+  const total = periodDays > 0 ? Math.ceil(periodDays / freq) : 0;
 
-  const instancesInRange = habit?.instances?.filter(i => i.date >= fromDate && i.date <= toDate)
+  if (total === 0) return { percentage: 0, completed: 0, total: 0 };
 
-  if (!instancesInRange?.length) {
-    return { percentage: 0, completed: 0, total: 0 };
-  }
-
-  const completed = instancesInRange.filter(i => i.completed).length;
-  const total = instancesInRange.length;
+  const completed = (habit?.instances ?? []).filter((i) => i.completed).length;
 
   return {
-    percentage: Math.round((completed / total) * 100),
+    percentage: Math.min(100, Math.round((completed / total) * 100)),
     completed,
     total,
   };

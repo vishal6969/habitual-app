@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 
+import { format } from "date-fns";
 import { Image, ImageBackground, Text, View } from "react-native";
 
 import styles from "./styles";
@@ -8,8 +9,9 @@ import { useHabits } from "@/src/stores/habits";
 
 const Banner = () => {
   const { habits } = useHabits();
+  const todayKey = format(new Date(), "yyyy-MM-dd");
   const filteredHabits = useMemo(
-    () => habits.filter((habit) => habit.active),
+    () => habits.filter((h) => h.instances?.some((i) => i.date === todayKey)),
     [habits]
   );
 

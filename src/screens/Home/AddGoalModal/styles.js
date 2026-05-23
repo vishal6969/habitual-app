@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "100%",
     paddingVertical: 12,
-    borderRadius: 4,
+    borderRadius: 6,
   },
   actionBtnTxt: {
     fontFamily: "Nunito-ExtraBold",

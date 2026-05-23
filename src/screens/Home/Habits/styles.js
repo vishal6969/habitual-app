@@ -1,6 +1,4 @@
-import { Dimensions, StyleSheet } from "react-native";
-
-const ScreenWidth = Dimensions.get("window").width;
+import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
@@ -8,7 +6,7 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingHorizontal: 16,
     paddingVertical: 32,
-    borderRadius: 12,
+    borderRadius: 16,
   },
   title: {
     fontFamily: "Nunito-Bold",
@@ -24,7 +22,7 @@ const styles = StyleSheet.create({
     paddingLeft: 12,
     paddingRight: 8,
     paddingVertical: 14,
-    borderRadius: 5,
+    borderRadius: 6,
     backgroundColor: "#edfff4",
   },
   altHabitItem: {
@@ -55,7 +53,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderWidth: 0.5,
     borderColor: "rgba(0, 0, 0, 0.2)",
-    borderRadius: 4,
+    borderRadius: 6,
   },
   edit: {
     flexDirection: "row",
@@ -68,7 +66,7 @@ const styles = StyleSheet.create({
   },
   deleteTxt: {
     fontFamily: "Nunito-SemiBold",
-    fontSize: 14,
+    fontSize: 16,
     color: "#838383",
     marginLeft: 8,
   },

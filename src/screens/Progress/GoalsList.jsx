@@ -1,17 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 
-import { FlatList, Text, View } from "react-native";
+import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
+import HabitHeatmapModal from "./HabitHeatmapModal";
 import ProgressComponent from "./ProgressComponent";
 import { goalsListStyle } from "./styles";
 
 const GoalsList = ({ goals }) => {
+  const [heatmapGoalId, setHeatmapGoalId] = useState(null);
+
   const renderItem = ({ item }) => {
     const { percentage, totalDays, completedDays } = item;
     const isAchieved = totalDays === completedDays;
 
     return (
-      <View style={goalsListStyle.goalItem} key={item}>
+      <TouchableOpacity
+        style={goalsListStyle.goalItem}
+        onPress={() => setHeatmapGoalId(item.id)}
+        activeOpacity={0.7}
+      >
         <View style={goalsListStyle.row}>
           <ProgressComponent
             size={49}
@@ -30,20 +38,29 @@ const GoalsList = ({ goals }) => {
             <Text style={goalsListStyle.goalName}>{item.name}</Text>
             <Text
               style={goalsListStyle.goalTarget}
-            >{`${completedDays} from ${totalDays} days target`}</Text>
+            >{`${completedDays} of ${totalDays} days target`}</Text>
           </View>
+          <Ionicons name="grid-outline" size={18} color="#c8c8c8" />
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 
   return (
-    <FlatList
-      showsVerticalScrollIndicator={false}
-      style={goalsListStyle.container}
-      data={goals}
-      renderItem={renderItem}
-    />
+    <>
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        style={goalsListStyle.container}
+        data={goals}
+        renderItem={renderItem}
+      />
+
+      <HabitHeatmapModal
+        visible={heatmapGoalId !== null}
+        goalId={heatmapGoalId}
+        onClose={() => setHeatmapGoalId(null)}
+      />
+    </>
   );
 };
 

@@ -1,14 +1,14 @@
 import { usePathname } from "expo-router";
 import { TabList, Tabs, TabSlot, TabTrigger } from "expo-router/ui";
 import { useEffect } from "react";
-import { StatusBar, StyleSheet, View } from "react-native";
+import { AppState, StatusBar, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import * as Sentry from '@sentry/react-native';
 
 import HomeTab from "../assets/icons/HomeTab";
 import ProgressTab from "../assets/icons/ProgressTab";
-import { registerHabitSync } from "../src/background/habitSync";
+import { runHabitSyncNow } from "../src/background/habitSync";
 import ConfirmProvider from "../src/components/Confirm";
-import * as Sentry from '@sentry/react-native';
 
 Sentry.init({
   dsn: 'https://26a0334fd02495bfa7ed2993892b515b@o4511021762150400.ingest.de.sentry.io/4511021762609232',
@@ -34,7 +34,23 @@ export default Sentry.wrap(function RootLayout() {
   const pathname = usePathname();
 
   useEffect(() => {
-    registerHabitSync();
+    // Run a sync on app open
+    runHabitSyncNow().catch((e) => {
+      console.warn("runHabitSyncNow failed:", e);
+    });
+
+    // Also sync when app comes to foreground (useful when returning from background)
+    const sub = AppState.addEventListener("change", (state) => {
+      if (state === "active") {
+        runHabitSyncNow().catch((e) => console.warn("runHabitSyncNow failed:", e));
+      }
+    });
+
+    return () => {
+      try {
+        sub.remove();
+      } catch {}
+    };
   }, []);
 
   const isActive = (route: string) => {

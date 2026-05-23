@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from "react";
 
+import { format } from "date-fns";
 import {
   FlatList,
   Pressable,
@@ -31,8 +32,10 @@ const Habits = ({ handleGoalEdit }) => {
   const [habitActionId, setHabitActionId] = useState();
 
   const handleItemPress = useCallback((habitId) => {
-    toggleComplete(habitId);
-    toggleHabitInstance(habitId);
+    const instance = toggleHabitInstance(habitId);
+    if (instance !== null) {
+      toggleComplete(habitId);
+    }
   }, []);
 
   const handleEditPress = useCallback((item) => {
@@ -124,7 +127,10 @@ const Habits = ({ handleGoalEdit }) => {
     );
   };
 
-  const filteredHabits = (habits || []).filter((h) => h.active);
+  const todayKey = format(new Date(), "yyyy-MM-dd");
+  const filteredHabits = (habits || []).filter(
+    (h) => h.instances?.some((i) => i.date === todayKey)
+  );
 
   if (!filteredHabits.length) {
     return <NoHabitState />;

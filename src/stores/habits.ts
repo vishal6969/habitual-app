@@ -14,7 +14,6 @@ interface Habit {
   goalId: number;
   name: string;
   completed?: boolean;
-  active?: boolean;
   instances: HabitInstance[];
 }
 
@@ -23,7 +22,7 @@ type HabitsState = {
   addHabit: (habit: Omit<Habit, "id">) => Habit;
   editHabit: (id: number, patch: Partial<Omit<Habit, "id">>) => Habit | null;
   deleteHabit: (id: number) => boolean;
-  toggleComplete: (id: number) => Habit | null;
+  toggleComplete: (id: number, isComplete?: boolean) => Habit | null;
   addInstance: (habitId: number) => Habit | null;
   toggleInstance: (habitId: number) => HabitInstance | null;
 };
@@ -47,7 +46,7 @@ export const useHabits = create<HabitsState>()(
       habits: [],
       addHabit: (habit) => {
         const id = Date.now();
-        const newHabit: Habit = { ...habit, id, active: true };
+        const newHabit: Habit = { ...habit, id };
         set((state) => ({ habits: [...state.habits, newHabit] }));
         return newHabit;
       },
@@ -68,11 +67,11 @@ export const useHabits = create<HabitsState>()(
         set({ habits: habits.filter((h) => h.id !== id) });
         return true;
       },
-      toggleComplete: (id) => {
+      toggleComplete: (id, isComplete) => {
         const { habits } = get();
         const idx = habits.findIndex((h) => h.id === id);
         if (idx === -1) return null;
-        const updated = { ...habits[idx], completed: !habits[idx].completed };
+        const updated = { ...habits[idx], completed: isComplete != undefined ? isComplete : !habits[idx].completed };
         const newHabits = [...habits];
         newHabits[idx] = updated;
         set({ habits: newHabits });
