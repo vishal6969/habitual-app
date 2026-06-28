@@ -2,8 +2,8 @@ import { usePathname } from "expo-router";
 import { TabList, Tabs, TabSlot, TabTrigger } from "expo-router/ui";
 import { useEffect } from "react";
 import { AppState, StatusBar, StyleSheet, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import * as Sentry from '@sentry/react-native';
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import HomeTab from "../assets/icons/HomeTab";
 import ProgressTab from "../assets/icons/ProgressTab";
@@ -34,7 +34,6 @@ export default Sentry.wrap(function RootLayout() {
   const pathname = usePathname();
 
   useEffect(() => {
-    // Run a sync on app open
     runHabitSyncNow().catch((e) => {
       console.warn("runHabitSyncNow failed:", e);
     });
@@ -53,6 +52,8 @@ export default Sentry.wrap(function RootLayout() {
     };
   }, []);
 
+  const insets = useSafeAreaInsets();
+
   const isActive = (route: string) => {
     if (!pathname) return false;
     if (route === "/" || route === "index")
@@ -63,12 +64,12 @@ export default Sentry.wrap(function RootLayout() {
   return (
     <ConfirmProvider>
       <Tabs>
-        <SafeAreaView edges={["top"]} style={styles.screenBG}>
+        <View style={[styles.screenBG, { paddingTop: insets.top }]}>
           <StatusBar barStyle={"dark-content"} />
           <TabSlot />
-        </SafeAreaView>
+        </View>
         <TabList asChild>
-          <View style={styles.tabBar}>
+          <View style={[styles.tabBar, { paddingBottom: insets.bottom }]}>
             <TabTrigger hitSlop={12} name="index" href="/">
               <HomeTab isFocussed={isActive("/")} />
             </TabTrigger>
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
   tabBar: {
     flexDirection: "row",
     justifyContent: "space-evenly",
-    paddingVertical: 21,
+    paddingTop: 21,
     backgroundColor: "#fcfcff",
   },
 });

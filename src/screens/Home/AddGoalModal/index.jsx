@@ -110,7 +110,7 @@ const AddGoalModal = ({ isVisible = true, onClose }) => {
     >
       <View style={styles.container}>
         <View style={styles.rowSpaceBtw}>
-          <Text style={styles.title}>Create New Goal</Text>
+          <Text style={styles.title}>{goalEditData ? "Update Goal" : "Create New Goal"}</Text>
           <TouchableOpacity onPress={handleClose}>
             <Close />
           </TouchableOpacity>
@@ -154,7 +154,7 @@ const AddGoalModal = ({ isVisible = true, onClose }) => {
             end={{ x: 1, y: 0 }}
             style={styles.actionBtn}
           >
-            <Text style={styles.actionBtnTxt}>Create</Text>
+            <Text style={styles.actionBtnTxt}>{goalEditData ? "Update" : "Create"}</Text>
           </LinearGradient>
         </TouchableOpacity>
       </View>
