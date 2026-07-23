@@ -41,15 +41,20 @@ const styles = StyleSheet.create({
   label: {
     fontFamily: "Nunito-SemiBold",
     fontSize: 14,
+    color: "#2f2f2f",
     marginTop: 22,
   },
   input: {
-    borderRadius: 4,
+    borderRadius: 6,
     borderWidth: 1,
     borderColor: "#ededed",
     marginTop: 8,
     backgroundColor: "#fff",
-    paddingLeft: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    fontFamily: "Nunito-Medium",
+    fontSize: 14,
+    color: "#2f2f2f",
   },
 });
 export default CustomTextInput;

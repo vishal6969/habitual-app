@@ -43,7 +43,13 @@
       ],
       "expo-font",
       "expo-secure-store",
-      "expo-notifications",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/android-icon-foreground.png",
+          "color": "#ff5c00"
+        }
+      ],
       [
         "@sentry/react-native/expo",
         {
@@ -51,7 +57,8 @@
           "project": "react-native",
           "organization": "vishal-mishra"
         }
-      ]
+      ],
+      "@react-native-community/datetimepicker"
     ],
     "experiments": {
       "typedRoutes": true,

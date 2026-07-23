@@ -46,10 +46,9 @@ const styles = StyleSheet.create({
   tooltip: {
     height: "auto",
     width: "auto",
-    paddingLeft: 8,
-    paddingRight: 8,
-    paddingTop: 4,
-    paddingBottom: 4,
+    minWidth: 130,
+    paddingHorizontal: 4,
+    paddingVertical: 4,
     backgroundColor: "#fff",
     borderWidth: 0.5,
     borderColor: "rgba(0, 0, 0, 0.2)",
@@ -58,16 +57,30 @@ const styles = StyleSheet.create({
   edit: {
     flexDirection: "row",
     alignItems: "center",
+    paddingVertical: 8,
+    paddingHorizontal: 8,
+  },
+  menuDivider: {
+    height: 0.5,
+    backgroundColor: "rgba(0, 0, 0, 0.08)",
+    marginHorizontal: 8,
   },
   delete: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 4,
+    paddingVertical: 8,
+    paddingHorizontal: 8,
+  },
+  editTxt: {
+    fontFamily: "Nunito-SemiBold",
+    fontSize: 16,
+    color: "#2f2f2f",
+    marginLeft: 8,
   },
   deleteTxt: {
     fontFamily: "Nunito-SemiBold",
     fontSize: 16,
-    color: "#838383",
+    color: "#e03030",
     marginLeft: 8,
   },
 });

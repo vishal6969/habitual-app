@@ -91,7 +91,7 @@ export default function ConfirmProvider({ children }) {
 const styles = StyleSheet.create({
   backdrop: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.25)",
+    backgroundColor: "rgba(0,0,0,0.4)",
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 28,
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     width: "100%",
     maxWidth: 420,
     backgroundColor: "#fff",
-    borderRadius: 12,
+    borderRadius: 6,
     padding: 20,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 6 },
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   subtitle: {
     fontFamily: "Nunito-Medium",
     fontSize: 14,
-    color: "#333",
+    color: "#777",
     marginBottom: 18,
   },
   actionsRow: {

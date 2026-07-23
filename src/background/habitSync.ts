@@ -2,6 +2,7 @@ import { useGoals } from "@/src/stores/goals";
 import { useHabits } from "@/src/stores/habits";
 import * as Sentry from "@sentry/react-native";
 import { differenceInCalendarDays, format, parseISO } from "date-fns";
+import { reconcileReminders } from "./reminders";
 
 async function performSync(): Promise<boolean> {
   try {
@@ -50,6 +51,7 @@ async function performSync(): Promise<boolean> {
       }
     }
 
+    reconcileReminders().catch((e) => console.warn("reconcileReminders failed:", e));
     return madeChanges;
   } catch (err) {
     console.error("habitSync error", err);

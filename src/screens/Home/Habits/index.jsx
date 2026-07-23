@@ -11,6 +11,7 @@ import {
 import Tooltip from "react-native-walkthrough-tooltip";
 
 import { showConfirm } from "@/src/components/Confirm";
+import { cancelHabitReminders } from "@/src/background/reminders";
 import { useGoals } from "@/src/stores/goals";
 import { useHabits } from "@/src/stores/habits";
 import CheckBox from "../../../../assets/icons/CheckBox";
@@ -45,6 +46,7 @@ const Habits = ({ handleGoalEdit }) => {
 
   const handleDeleteGoal = useCallback(
     ({ habitId, goalId }) => {
+      cancelHabitReminders(habitId).catch(() => {});
       deleteHabit(habitId);
       deleteGoal(goalId);
     },
@@ -54,7 +56,7 @@ const Habits = ({ handleGoalEdit }) => {
   const handleDeletePress = useCallback(
     (item) => {
       const confirmationModalOptions = {
-        title: "Remove Habit Goal ?",
+        title: "Remove Habit Goal?",
         subtitle:
           "This will permanently delete your habit goal and its progress",
         confirmText: "Remove",
@@ -75,18 +77,13 @@ const Habits = ({ handleGoalEdit }) => {
   const renderTooltip = (item) => {
     return (
       <View>
-        <TouchableOpacity
-          onPress={() => handleEditPress(item)}
-          style={styles.edit}
-        >
-          <Edit size={14} />
-          <Text style={styles.deleteTxt}>Edit</Text>
+        <TouchableOpacity onPress={() => handleEditPress(item)} style={styles.edit}>
+          <Edit size={16} color="#2f2f2f" />
+          <Text style={styles.editTxt}>Edit</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.delete}
-          onPress={() => handleDeletePress(item)}
-        >
-          <Delete size={14} />
+        <View style={styles.menuDivider} />
+        <TouchableOpacity style={styles.delete} onPress={() => handleDeletePress(item)}>
+          <Delete size={16} color="#e03030" />
           <Text style={styles.deleteTxt}>Delete</Text>
         </TouchableOpacity>
       </View>
@@ -138,7 +135,7 @@ const Habits = ({ handleGoalEdit }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Today's Routine</Text>
+      <Text style={styles.title}>{"Today's Routine"}</Text>
       <FlatList
         data={filteredHabits}
         renderItem={renderItem}

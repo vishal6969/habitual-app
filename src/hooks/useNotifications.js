@@ -30,6 +30,12 @@ const useNotifications = () => {
         vibrationPattern: [0, 250, 250, 250],
         lightColor: "#FF231F7C",
       });
+      await Notifications.setNotificationChannelAsync("reminders", {
+        name: "Reminders",
+        importance: Notifications.AndroidImportance.HIGH,
+        vibrationPattern: [0, 250, 250, 250],
+        sound: "default",
+      });
     }
 
     const { status: existingStatus } =

@@ -9,12 +9,19 @@ type HabitInstance = {
   completed: boolean;
 };
 
-interface Habit {
+export type Reminder = {
+  enabled: boolean;
+  time: string; // "HH:mm" 24h
+  notificationIds?: string[];
+};
+
+export interface Habit {
   id: number;
   goalId: number;
   name: string;
   completed?: boolean;
   instances: HabitInstance[];
+  reminder?: Reminder;
 }
 
 type HabitsState = {
@@ -25,6 +32,7 @@ type HabitsState = {
   toggleComplete: (id: number, isComplete?: boolean) => Habit | null;
   addInstance: (habitId: number) => Habit | null;
   toggleInstance: (habitId: number) => HabitInstance | null;
+  setReminder: (habitId: number, reminder: Reminder | undefined) => Habit | null;
 };
 
 const secureStorage = {
@@ -109,6 +117,16 @@ export const useHabits = create<HabitsState>()(
         set({ habits });
 
         return instances[iIdx];
+      },
+      setReminder: (habitId, reminder) => {
+        const habits = get().habits;
+        const idx = habits.findIndex((h) => h.id === habitId);
+        if (idx === -1) return null;
+        const updated = { ...habits[idx], reminder };
+        const newHabits = [...habits];
+        newHabits[idx] = updated;
+        set({ habits: newHabits });
+        return updated;
       },
     }),
     {
